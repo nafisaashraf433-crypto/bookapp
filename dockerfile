@@ -1,14 +1,15 @@
-# Step 1: Use an official Python image as base
-FROM python:3.10-slim
+# Example Dockerfile
+FROM python:3.11-slim
 
-# Step 2: Set the working directory inside the container
 WORKDIR /app
 
-# Step 3: Copy all files from your project to the container
-COPY . /app
+# Copy requirements first (for caching)
+COPY requirements.txt .
 
-# Step 4: Install dependencies (if you have requirements.txt)
+# Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Step 5: Command to run your app
+# Then copy the rest of your project
+COPY . .
+
 CMD ["python", "app.py"]
