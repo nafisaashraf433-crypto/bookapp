@@ -1,58 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
-    
+
     <groupId>com.bookfinder</groupId>
     <artifactId>book-finder</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
-    
+
+    <name>Book Finder</name>
+    <description>Spring Boot Book Finder Application</description>
+
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.7.18</version>
+        <relativePath/>
     </parent>
-    
+
     <properties>
         <java.version>17</java.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
     </properties>
-    
+
     <dependencies>
+        <!-- Web + Thymeleaf -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
-        
-        <!-- H2 Database -->
+
+        <!-- JPA + H2 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
         </dependency>
-        
+
         <!-- Thymeleaf Layout Dialect -->
         <dependency>
             <groupId>nz.net.ultraq.thymeleaf</groupId>
             <artifactId>thymeleaf-layout-dialect</artifactId>
         </dependency>
+
+        <!-- Optional: Testing -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
-    
+
     <build>
         <plugins>
+            <!-- Spring Boot Plugin -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
+                    <!-- 👇 This must match your main class exactly -->
                     <mainClass>com.bookfinder.BookFinderApplication</mainClass>
-                    <executable>true</executable>
                 </configuration>
                 <executions>
                     <execution>
@@ -62,6 +82,8 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <!-- Optional: Azure Deploy Plugin -->
             <plugin>
                 <groupId>com.microsoft.azure</groupId>
                 <artifactId>azure-webapp-maven-plugin</artifactId>
@@ -80,7 +102,7 @@
                     <deployment>
                         <resources>
                             <resource>
-                                <directory>${project.basedir}/target</directory>
+                                <directory>${project.build.directory}</directory>
                                 <includes>
                                     <include>*.jar</include>
                                 </includes>
@@ -91,7 +113,7 @@
             </plugin>
         </plugins>
     </build>
-    
+
     <profiles>
         <profile>
             <id>local</id>
@@ -102,7 +124,7 @@
                 <spring.profiles.active>local</spring.profiles.active>
             </properties>
         </profile>
-        
+
         <profile>
             <id>azure</id>
             <properties>
@@ -110,4 +132,5 @@
             </properties>
         </profile>
     </profiles>
+
 </project>
